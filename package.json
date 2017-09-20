@@ -1,6 +1,6 @@
 {
   "name": "moxie",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "author": "Thiago dos Reis <thiagodreis@gmail.com>",
   "description": "A simple helpful robot for your Company",
@@ -15,6 +15,8 @@
     "hubot-redis-brain": "0.0.4",
     "hubot-rules": "^0.1.2",
     "hubot-scripts": "^2.17.2",
-    "hubot-shipit": "^0.2.1"
+    "hubot-shipit": "^0.2.1",
+    "request": "^2.82.0",
+    "x2js": "^3.1.1"
   }
 }
