@@ -1,19 +1,34 @@
 # Description:
+#   This is just a demonstration script of how to handle the main events and methods for Moxtra Adapter.
 #   Here you can find examples on how to handle some Moxtra's Events like:
 #   - "bot_installed"
 #   - "bot_uninstalled"
-#   - Sending Buttons
-#   - Handling Buttons Postback
-#   - Sending Files
+#   - Sending text, rich messages and buttons
+#   - Handling buttons postback
+#   - Sending files
+#
+# Dependencies:
+#   none
+#
+# Author:
+#   Moxtra Inc
+
 
 module.exports = (robot) ->
+
+  # Send message to the Binder starting from the Bot side (Spontaneously).
+  obj = {}
+  obj.message = {}
+  obj.message.id = "BxTOgQQ5SGiK2lXiwoPxgEK" #binder_id
+  obj.message.org_id = "Pg3dAcMahyYFJDE4HyfFZw6" 
+  robot.send obj, "Spontaneous message from Bot!"
 
   #bot_installed
   robot.listen(
     (message) -> # Match function
       message.message_type is "bot_installed"
     (response) -> # Standard listener callback
-      response.send "Hi, I'm Moxie, your personal assistant. Type \"@Moxie help\" to see what I can do for you!"
+      response.send "Hi, I'm #{robot.name}, your personal assistant. Type \"@#{robot.name} help\" to see what I can do for you!"
   )
 
   #bot_uninstalled
@@ -67,7 +82,10 @@ module.exports = (robot) ->
   # robot.enter (res) ->
   #   res.send "SOMEONE ENTERED IN THE BINDER"
 
-
+  robot.hear /change bot name to (.*)/i, (res) ->
+    name = res.match[1]
+    robot.name = name
+    res.send "Ok. My name is #{robot.name}"
 
   robot.hear /this is (.*)/i, (res) ->
     person = res.match[1]
