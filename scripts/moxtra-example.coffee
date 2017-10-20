@@ -6,6 +6,7 @@
 #   - Sending text, rich messages and buttons
 #   - Handling buttons postback
 #   - Sending files
+#   - Linking 3rd party accounts
 #
 # Dependencies:
 #   none
@@ -13,6 +14,7 @@
 # Author:
 #   Moxtra Inc
 
+_accountLinkedToken = {}
 
 module.exports = (robot) ->
 
@@ -30,7 +32,6 @@ module.exports = (robot) ->
     (response) -> # Standard listener callback
       response.send "Hi, I'm #{robot.name}, your personal assistant. Type \"@#{robot.name} help\" to see what I can do for you!"
   )
-
   #bot_uninstalled
   robot.listen(
     (message) -> # Match function
@@ -38,7 +39,15 @@ module.exports = (robot) ->
     (response) -> # Standard listener callback
       response.send "Goodbye!"
   )
-  
+
+  # Sending Files
+  robot.hear /files/i, (res) ->
+    options = {}
+    options.file_path = __dirname+'/files/start.png'
+    options.audio_path = __dirname+'/files/test_comment.3gpp'
+    res.message.options = options
+    res.send "Here are the files you requested:"
+
   # Sending Buttons
   robot.hear /meet/i, (res) ->
     buttons = [{ type: 'postback', text: 'Sure!', payload: 'BUTTON_SURE'}, { type: 'postback', text: 'Not Sure!', payload: 'BUTTON_NOTSURE'}]
@@ -58,13 +67,36 @@ module.exports = (robot) ->
         response.send "Ok #{text}. Let me know later."
   )
 
-  # Sending Files
-  robot.hear /files/i, (res) ->
-    options = {}
-    options.file_path = __dirname+'/files/start.png'
-    options.audio_path = __dirname+'/files/test_comment.3gpp'
-    res.message.options = options
-    res.send "Here are the files you requested:"
+  #account_link
+  robot.hear /link my account/i, (res) ->
+    # check if there is a revious token for this user
+    # you might also need to check the expiration time
+    token = _accountLinkedToken[ res.message.event.user.id ]
+    if token
+      res.send "Your account is already linked! Please, say a command to use it."
+      # res.send "Token:"+token.access_token
+    else
+      buttons = [{ type: 'account_link', text: 'Log in'}]
+      res.message.buttons = buttons
+      res.send "Please login:"
+
+  #account_link_success callback
+  robot.listen(
+    (message) -> # Match function
+      message.message_type is "account_link_success"
+    (response) -> # Standard listener callback
+      #store the token for future use
+      _accountLinkedToken[ response.message.event.user.id ] = response.message.event.user.token
+      response.send response.message.text # + " TOKEN:"+ response.message.event.user.token.access_token
+  )
+  
+  #account_link_error callback
+  robot.listen(
+    (message) -> # Match function
+      message.message_type is "account_link_error"
+    (response) -> # Standard listener callback
+      response.send "Sorry there was an error in the Account Link process: "+response.message.text
+  )
 
   robot.hear /badgers/i, (res) ->
     res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
@@ -74,7 +106,6 @@ module.exports = (robot) ->
 
   robot.respond /Hi/i, (res) ->
     res.reply "Hello Moxtra! We are together now!"
-
 
   # User Enter Event is not current supported by Moxtra Bot
   # Respond with Emote (res.emote) is not current supported by Moxtra Bot
