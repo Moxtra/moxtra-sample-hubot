@@ -22,7 +22,7 @@ Once you understand how Hubot and the [Moxtra's Adapter][MoxAdapter] works you w
 
 ## What I will find
 
-This is a complete Moxtra Hubot code, here you will find all the necessary code to rum your Moxtra Hubot Bot. 
+This is a complete Moxtra Hubot code, here you will find all the necessary code to run your Moxtra Hubot Bot. 
 
 In this code you will find examples on how to handle Moxtra's Events:
 
