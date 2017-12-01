@@ -4,6 +4,9 @@
   "private": true,
   "author": "Thiago dos Reis <thiagodreis@gmail.com>",
   "description": "A simple helpful Moxtra Bot for your Company",
+  "scripts": {
+    "start": "bin/hubot -a moxtra"
+  },
   "dependencies": {
     "coffee-script": "^1.12.6",
     "hubot": "^2.19.0",

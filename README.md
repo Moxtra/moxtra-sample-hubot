@@ -2,7 +2,7 @@
 
 This is a sample of a [Hubot][hubot-link] using [Moxtra's Adapter][MoxAdapter].
 
-moxtra-sample-hubot is a chat bot built on the [Hubot][hubot] framework.
+Moxtra-sample-hubot is a chat bot built with [Hubot][hubot] framework.
 It also uses [Moxtra's adapter][MoxAdapter] to connect your Hubot to your 
 [Moxtra's account][moxtra].
 
